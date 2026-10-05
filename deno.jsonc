@@ -1,24 +1,35 @@
 {
-  "name": "api-workbench",
-  "version": "0.0.1",
+  "name": "@fathym/sample-api-workbench",
+  "version": "0.0.0",
+  "license": "MIT",
+  // The version task resolves a freshly published @fathym/common; skip Deno's 24h dependency-age gate.
+  "minimumDependencyAge": "0",
   "exports": {
     ".": "./workbenches/api/local.ts"
   },
   "tasks": {
-    "api": "fai run workbenches/api/local.ts --mode API"
+    "api": "fai run workbenches/api/local.ts --mode API",
+    "build": "deno task build:fmt && deno task build:lint && deno task build:check",
+    "build:check": "deno check **/*.ts",
+    "build:fmt": "deno fmt",
+    "build:lint": "deno lint",
+    "version": "deno run -A jsr:@fathym/common@0.2.325/build/version"
   },
   "imports": {
-    // NOTE: 0.0.406 does NOT yet include APIMode. `APIMode` ships as part of
-    // Track 6 Phase 9 (see fathym-deno/power-ai
-    // feature/track-6-phases-9-10-11 + oi-core-pack#61). This pin needs a
-    // bump to the post-cascade release version once the JSR publish lands.
-    // Kept at 0.0.406 for now so deno.jsonc stays syntactically valid; the
-    // APIMode import in workbenches/api/local.ts will fail until the bump.
     "@fathym/fai/workbenches": "jsr:@fathym/fai@0.0.785/workbenches",
     "@fathym/fai/tools": "jsr:@fathym/fai@0.0.785/tools",
     "zod": "npm:zod@4.1.13"
   },
   "compilerOptions": {
     "strict": true
-  }
+  },
+  "fmt": {
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "proseWrap": "preserve",
+    "semiColons": true,
+    "singleQuote": true,
+    "useTabs": false
+  },
+  "lock": false
 }

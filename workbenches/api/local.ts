@@ -23,7 +23,7 @@
  *
  * @module
  */
-import { APIMode, Workbench } from '@fathym/fai/workbenches';
+import { APIMode, Workbench, type WorkbenchBuilder } from '@fathym/fai/workbenches';
 import { Tool } from '@fathym/fai/tools';
 import { z } from 'zod';
 
@@ -39,10 +39,11 @@ const HelloTool = Tool(
       output: z.promise(z.string()),
     }).describe('Return a friendly greeting for the provided name.'),
   }))
-  .Execute((_ctx) => ({
-    Greet: (name: string) =>
-      Promise.resolve(`Hello from api-workbench, ${name}!`),
-  }));
+  .Execute((_ctx) =>
+    Promise.resolve({
+      Greet: (name = 'world') => Promise.resolve(`Hello from api-workbench, ${name}!`),
+    })
+  );
 
 const EchoTool = Tool(
   'echo',
@@ -59,14 +60,17 @@ const EchoTool = Tool(
       })),
     }).describe('Echo the payload back, adding a receipt timestamp.'),
   }))
-  .Execute((_ctx) => ({
-    Echo: (body: unknown) =>
-      Promise.resolve({ received: body, ts: Date.now() }),
-  }));
+  .Execute((_ctx) =>
+    Promise.resolve({
+      Echo: (body: unknown) => Promise.resolve({ received: body, ts: Date.now() }),
+    })
+  );
 
-export default Workbench(
+const workbench: WorkbenchBuilder = Workbench(
   'api-sample',
   'Track 6 Phase 9 sample workbench demonstrating APIMode (REST hosting of workbench tools).',
 )
   .Tools({ Hello: HelloTool, Echo: EchoTool })
   .Modes({ API: APIMode() });
+
+export default workbench;
