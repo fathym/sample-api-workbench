@@ -1,6 +1,6 @@
-# api-workbench
+# @fathym/sample-api-workbench
 
-Track 6 Phase 9 sample workbench demonstrating **APIMode** — REST hosting of workbench tools inside an OpenX workspace.
+Track 6 Phase 9 sample workbench demonstrating **APIMode** — REST hosting of workbench tools inside an OpenX workspace. Published to JSR as [`@fathym/sample-api-workbench`](https://jsr.io/@fathym/sample-api-workbench).
 
 Sibling to [`hello-workbench`](https://github.com/fathym-deno/hello-workbench) (the MCP-mode counterpart).
 
@@ -8,28 +8,30 @@ Sibling to [`hello-workbench`](https://github.com/fathym-deno/hello-workbench) (
 
 Two `Tool()` builders, each declaring one method, wired into a `Workbench().Modes({ API: APIMode() })`. When deployed via OpenX, `APIMode` auto-exposes every tool method as a REST endpoint at `POST /{lowerTool}/{methodName}`:
 
-| Route | Method | Behavior |
-|---|---|---|
-| `POST /hello/greet` | `HelloTool.Greet(name)` | Returns `Hello from api-workbench, {name}!` |
-| `POST /echo/echo` | `EchoTool.Echo(body)` | Returns `{ received: body, ts: <unix-ms> }` |
-| `GET  /openapi.json` | (auto) | OpenAPI 3.x catalog of the two routes |
-| `GET  /health` | (auto) | Readiness probe (200 OK) |
+| Route                | Method                  | Behavior                                    |
+| -------------------- | ----------------------- | ------------------------------------------- |
+| `POST /hello/greet`  | `HelloTool.Greet(name)` | Returns `Hello from api-workbench, {name}!` |
+| `POST /echo/echo`    | `EchoTool.Echo(body)`   | Returns `{ received: body, ts: <unix-ms> }` |
+| `GET  /openapi.json` | (auto)                  | OpenAPI 3.x catalog of the two routes       |
+| `GET  /health`       | (auto)                  | Readiness probe (200 OK)                    |
 
 Same `.Tools({...})` declaration would also serve MCP tools when `.Modes({ MCP: MCPMode(), API: APIMode() })` — one workbench, multiple client protocols.
 
-## Requires `@fathym/fai` post-Phase-9 release
+## Run it
 
-**⚠️ This sample doesn't run yet.** `APIMode` ships as part of Track 6 Phase 9 (tracked in [`o-industrial/oi-core-pack#61`](https://github.com/o-industrial/oi-core-pack/issues/61)). The `deno.jsonc` here pins `@fathym/fai@0.0.406`, which does NOT yet export `APIMode`. Once the Phase 9 cascade release publishes `@fathym/fai` with APIMode included, bump the pin here and this sample runs.
+Straight from JSR, no clone needed:
 
-Current pin: `@fathym/fai@0.0.406` (placeholder — see NOTE in `deno.jsonc`).
+```
+fai run jsr:@fathym/sample-api-workbench --mode API
+```
 
-## Local run (post pin bump)
+Or from a clone:
 
 ```
 deno task api
 ```
 
-Starts a local HTTP server on `http://localhost:4968`. Then in another terminal:
+Either starts a local HTTP server on `http://localhost:4968`. Then in another terminal:
 
 ```
 curl -X POST http://localhost:4968/hello/greet -d '{"arg0":"OpenX"}' -H 'Content-Type: application/json'
@@ -46,7 +48,7 @@ curl http://localhost:4968/openapi.json | jq .paths
 
 1. In your workspace, drag a **SurfaceWorkbench** onto a surface.
 2. In the inspector **Source** tab, point at:
-   - Repo: `https://github.com/fathym/api-workbench`
+   - Repo: `https://github.com/fathym/sample-api-workbench`
    - Ref: `main` (or pin a commit/tag)
    - Entry: `workbenches/api/local.ts`
 3. In the **Hosting** tab, set **APISlug** (e.g. `api-sample`).
