@@ -16,8 +16,8 @@
     "version": "deno run -A jsr:@fathym/common@0.2.325/build/version"
   },
   "imports": {
-    "@fathym/fai/workbenches": "jsr:@fathym/fai@0.0.885/workbenches",
-    "@fathym/fai/tools": "jsr:@fathym/fai@0.0.885/tools",
+    "@fathym/fai/workbenches": "jsr:@fathym/fai@0.0.890-round-10/workbenches",
+    "@fathym/fai/tools": "jsr:@fathym/fai@0.0.890-round-10/tools",
     "zod": "npm:zod@4.1.13"
   },
   "compilerOptions": {
