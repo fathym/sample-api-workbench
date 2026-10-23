@@ -71,6 +71,7 @@ const workbench: WorkbenchBuilder = Workbench(
   'Track 6 Phase 9 sample workbench demonstrating APIMode (REST hosting of workbench tools).',
 )
   .Tools({ Hello: HelloTool, Echo: EchoTool })
-  .Modes({ API: APIMode() });
+  // The port API mode listens on (fai's default, 4968), so OpenX knows where to send requests.
+  .Modes({ API: APIMode().Ports(4968) });
 
 export default workbench;
