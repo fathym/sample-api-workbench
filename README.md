@@ -56,9 +56,9 @@ curl http://localhost:4968/openapi.json | jq .paths
 5. Deploy. Once `HostingStatus` is `Running`, the routes become reachable at:
 
    ```
-   POST {workspace-origin}/oi-api/workbenches/api-sample/API/hello/greet
-   POST {workspace-origin}/oi-api/workbenches/api-sample/API/echo/echo
-   GET  {workspace-origin}/oi-api/workbenches/api-sample/API/openapi.json
+   POST {workspace-origin}/ox-api/w/{workspace-id}/workbenches/api-sample/API/hello/greet
+   POST {workspace-origin}/ox-api/w/{workspace-id}/workbenches/api-sample/API/echo/echo
+   GET  {workspace-origin}/ox-api/w/{workspace-id}/workbenches/api-sample/API/openapi.json
    ```
 
    Auth: the workbench checks its own callers. OpenX checks no caller in front of it and passes none of its
