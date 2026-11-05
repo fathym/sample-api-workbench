@@ -61,7 +61,10 @@ curl http://localhost:4968/openapi.json | jq .paths
    GET  {workspace-origin}/oi-api/workbenches/api-sample/API/openapi.json
    ```
 
-   Auth: Bearer JWT with `Workspace.Workbench.Host` access right.
+   Auth: the workbench checks its own callers. OpenX checks no caller in front of it and passes none of its
+   own credentials on; a mode set to **Identity** is handed its login settings (`FATHYM_OX_WORKBENCH_LOGINS`)
+   to check them with. This sample checks no caller, so add sign-in before it serves anything worth protecting:
+   [Add Sign-in to Your Workbench](https://www.fathym.com/docs/openx/guides/workbenches/sign-in).
 
 6. Open the workspace **API Explorer** → "Hosted Workbench APIs" tab → confirm the `api-sample` card shows both routes with copy-paste curl examples (populated from the OpenAPI catalog).
 
