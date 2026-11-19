@@ -53,25 +53,22 @@ curl http://localhost:4968/openapi.json | jq .paths
    - Entry: `workbenches/api/local.ts`
 3. In the **Hosting** tab, set **APISlug** (e.g. `api-sample`).
 4. In the **Modes** tab (after first deploy), enable **API**.
-5. Deploy. Once `HostingStatus` is `Running`, the routes become reachable at:
+5. Deploy. Once `HostingStatus` is `Running`, the **Hosting** tab lists the API mode's own Azure address,
+   `{mode address}`, and the routes are reachable there:
 
    ```
-   POST {workspace-origin}/ox-api/w/{workspace-id}/workbenches/api-sample/API/hello/greet
-   POST {workspace-origin}/ox-api/w/{workspace-id}/workbenches/api-sample/API/echo/echo
-   GET  {workspace-origin}/ox-api/w/{workspace-id}/workbenches/api-sample/API/openapi.json
+   POST https://{mode address}/hello/greet
+   POST https://{mode address}/echo/echo
+   GET  https://{mode address}/openapi.json
    ```
 
    Auth: the sample's code sets no Auth. A mode's Auth is **Who may call this mode** in the inspector's **Modes**
-   tab, and a mode that sets none takes the default, **Identity**. OpenX passes none of its own credentials on to
-   the workbench. In front of an **Identity** mode, OpenX's address answers `403`
-   (`WORKBENCH_LOGIN_NOT_REGISTERED`) until App Identity has registered the mode's app, and `403`
-   (`WORKBENCH_SIGN_IN_UNCONFIRMED`) until a person has confirmed the mode, if it was set before workbenches
-   checked their own callers. So on a freshly deployed batch the three routes above answer `403`, and that is
-   OpenX's address closed, not this sample broken. Once the app is registered and the mode confirmed, OpenX
-   forwards only a bearer issued for the mode's app. The mode is handed its login settings
-   (`FATHYM_OX_WORKBENCH_LOGINS`) to check callers with. An open mode (Auth **None**) gets no login settings from
-   OpenX and no check at its address, so it must check its own callers. This sample checks no caller itself, so
-   add sign-in before it serves anything worth protecting:
+   tab, and a mode that sets none takes the default, **Identity**. OpenX is not in front of the mode: a caller
+   reaches it at its own address, and OpenX passes none of its own credentials on to the workbench. An
+   **Identity** mode is handed its login settings (`FATHYM_OX_WORKBENCH_LOGINS`) to check callers with; a mode set
+   to **Identity** before workbenches checked their own callers keeps its address closed until a person confirms
+   it in the **Modes** tab. An open mode (Auth **None**) gets no login settings. This sample checks no caller
+   itself, so add sign-in before it serves anything worth protecting:
    [Add Sign-in to Your Workbench](https://www.fathym.com/docs/openx/guides/workbenches/sign-in).
 
 6. Open the workspace **API Explorer** → "Hosted Workbench APIs" tab → confirm the `api-sample` card shows both routes with copy-paste curl examples (populated from the OpenAPI catalog).
